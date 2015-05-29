@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+      <div class="col-md-9">
+        <h3 class="page-header">Report List</h3>
+      </div>
+      <div class="col-md-3">
+        <a href="{% url 'web_ui:create_report' %}" class="btn btn-default btn-sm pull-right">Create Report</a>
+      </div>
+    </div>
+    {% for report in reports %}
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4 class="lead"><a href="{% url 'web_ui:show_report' pk=report.id %}">{{ report.title }}</a></h4>
+        <div class="report-header">
+          <span class="glyphicon glyphicon-pencil"></span><a href="#">{{ report.author }}</a>
+          <span class="glyphicon glyphicon-time"></span>Posted on {{ report.created_at }}
+        </div>
+        <div class="report-content">
+          <br>
+          <p>{{ report.content|truncatechars:200 }}</p>
+          <p class="pull-right"><a href="{% url 'web_ui:show_report' pk=report.id %}">read more</a></p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+{% endblock content %}

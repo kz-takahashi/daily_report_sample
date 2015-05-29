@@ -1,0 +1,98 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Daily Report{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap-theme.min.css' %}" rel="stylesheet">
+  <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  {% block extrahead %}{% endblock %}
+</head>
+<body>
+  <!-- navigation -->
+  <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Daily Report</a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-1">
+        <ul class="nav navbar-nav">
+          <li><a href="{% url 'web_ui:list_report' %}">Reports</a></li>
+          <li><a href="{% url 'web_ui:list_author_report' author_id=user.id %}">My Reports</a></li>
+          <li><a href="/admin/auth/user/{{ user.id }}">Edit Profile</a></li>
+          <li><a href="/admin/auth/user">Manage Users</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          {% if user.id != None %}
+          <li><p class="navbar-text">Signed in as <a class="navbar-link" href="/admin/auth/user/{{ user.id }}">{{ user.username }}</a></p><li>
+          <li><a class="navbar-link" href="/admin/logout">Logout</a></li>
+          {% else %}
+          <li><a class="navbar-link" href="/admin/login">Login</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- /navigation -->
+
+  <!-- main_container -->
+  <div class="container">
+    <div class="row">
+      <!-- Main Content -->
+      <div class="col-lg-9">
+        {% block content %}
+          {{ content }}
+        {% endblock %}
+      </div>
+      <!-- .Main Content -->
+
+      <!-- Sidebar Widgets -->
+      <div class="col-md-3">
+        <div class="well">
+          <h4>Search</h4>
+          <form action="/reports/search" method="get" class="form-horizontal" role="form" />
+          <div class="input-group">
+            <input type="text" name="query" class="form-control">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="well">
+          <h4>Authors</h4>
+          <ul>
+             {% for author in authors %}
+             <li><a href="/reports/author/{{ author.id }}">{{ author.username }}</a></li>
+             {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <!-- .Sidebar Widgets -->
+    </div>
+  </div>
+  <!-- /main_container -->
+
+  <!-- footer -->
+  <footer class="footer navbar-static-bottom">
+    <div class="container">
+      <div class="col-lg-12">
+        <hr>
+        <p class="pull-right"></p>
+      </div>
+    <div>
+  </footer>
+  <!-- /footer -->
+
+</body>
+</html>
